@@ -1,0 +1,191 @@
+<p-table
+  #dt
+  [value]="members"
+  dataKey="id"
+  styleClass="ui-table-customers"
+  [rowHover]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  [paginator]="true"
+  currentPageReportTemplate="Showing &#123;first&#125; to &#123;last&#125; of &#123;totalRecords&#125; entries"
+  [filterDelay]="0"
+  [globalFilterFields]="[
+    'full_name',
+    'email_id',
+    'mobile_no',
+    'dob'
+  ]"
+>
+  <ng-template pTemplate="caption">
+    List of Members
+    <div class="ui-table-globalfilter-container">
+      <button
+        pButton
+        type="button"
+        label="Add New Member"
+        (click)="addNewUser()"
+        style="margin: 0px 10px 5px;"
+      ></button>
+      <input
+        pInputText
+        type="text"
+        (input)="dt.filterGlobal($event.target.value, 'contains')"
+        placeholder="Global Search"
+      />
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Sr. No</th>
+      <th pSortableColumn="full_name">
+        Full Name <p-sortIcon field="full_name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="email_id">
+        Email <p-sortIcon field="email_id"></p-sortIcon>
+      </th>
+      <th pSortableColumn="mobile_no">
+        Mobile No <p-sortIcon field="mobile_no"></p-sortIcon>
+      </th>
+      <th pSortableColumn="dob">
+        Date Of Birth <p-sortIcon field="dob"></p-sortIcon>
+      </th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filter($event.target.value, 'full_name', 'contains')"
+          placeholder="Search by Full Name"
+          class="ui-column-filter"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filter($event.target.value, 'email_id', 'contains')"
+          placeholder="Search by Email"
+          class="ui-column-filter"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filter($event.target.value, 'mobile_no', 'contains')"
+          placeholder="Search by Mobile No"
+          class="ui-column-filter"
+        />
+      </th>
+      <th>
+        <p-calendar
+          (onSelect)="onDateSelect($event)"
+          (onClearClick)="dt.filter('', 'dob', 'equals')"
+          [showButtonBar]="true"
+          styleClass="ui-column-filter"
+          placeholder="Search By Date Of Birth"
+          [readonlyInput]="true"
+          [showOtherMonths]="true"
+          [selectOtherMonths]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1938:2030"
+          dateFormat="yy-mm-dd"
+        ></p-calendar>
+      </th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-i="rowIndex" let-member>
+    <tr>
+      <td>
+        {{ i + 1 }}
+      </td>
+      <td>
+        <span class="ui-column-title">Full Name</span>
+        {{ member.full_name }}
+      </td>
+      <td>
+        <span class="ui-column-title">Email</span>
+
+        <span style="vertical-align: middle; margin-left: 0.5em;">{{
+          member.email_id
+        }}</span>
+      </td>
+      <td>
+        <span class="ui-column-title">Mobile No</span>
+        {{ member.mobile_no }}
+      </td>
+      <td>
+        <span class="ui-column-title">Date Of Birth</span>
+        <span [class]="'customer-badge status-' + member.id">{{
+          member.dob 
+        }}</span>
+      </td>
+      <td>
+        <button
+          style="margin: 5px;"
+          pButton
+          type="button"
+          class="ui-button-secondary"
+          icon="pi pi-user-edit"
+          title="Edit"
+          (click)="editMember(member.id)"
+        ></button>
+        <button
+          style="margin: 5px;"
+          pButton
+          type="button"
+          class="ui-button-secondary"
+          icon="pi pi-trash"
+          (click)="showModalDialog(member.id)"
+          title="Delete"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="7" style="text-align: left;">No Members found.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- toaster  -->
+<p-toast position="top-right"></p-toast>
+
+<!-- delete confim dialog -->
+<p-dialog
+  header="Confirm Delete"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>Are You Sure ?</p>
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      (click)="deleteMember()"
+      label="Yes"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      (click)="displayModal = false"
+      label="No"
+      class="ui-button-secondary"
+    ></button>
+  </p-footer>
+</p-dialog>

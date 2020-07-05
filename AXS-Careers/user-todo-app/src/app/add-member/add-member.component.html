@@ -1,0 +1,98 @@
+<p-toast position="top-right"></p-toast>
+<h3>Add New Member</h3>
+<form [formGroup]="addForm">
+  <div class="ui-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-6">
+      <label for="firstname6">First Name</label>
+      <input
+        appTitleCase
+        id="firstname6"
+        name="firstname"
+        formControlName="first_name"
+        type="text"
+        pInputText
+      />
+    </div>
+    <div class="p-field p-col-12 p-md-6">
+      <label for="lastname6">Lastname</label>
+      <input
+        appTitleCase
+        id="lastname6"
+        name="lastname"
+        formControlName="last_name"
+        type="text"
+        pInputText
+      />
+    </div>
+    <div class="p-field p-col-12 p-md-6">
+      <label for="email6">Email</label>
+      <input
+        id="email6"
+        name="email"
+        formControlName="email_id"
+        type="text"
+        pInputText
+      />
+    </div>
+    <div class="p-field p-col-12 p-md-6">
+      <label for="mobileno6">Mobile No</label>
+      <input
+        id="mobileno6"
+        name="mobileno"
+        formControlName="mobile_no"
+        type="text"
+        pInputText
+      />
+    </div>
+    <div class="p-field p-col-12 p-md-12">
+      <label for="dob4">Date Of Birth</label>
+      <p-calendar
+        formControlName="dob"
+        [showOtherMonths]="true"
+        [selectOtherMonths]="true"
+        [monthNavigator]="true"
+        [yearNavigator]="true"
+        yearRange="1938:2030"
+        dateFormat="dd/mm/yy"
+      >
+      </p-calendar>
+    </div>
+    <div class="p-field p-col-12 p-md-12">
+      <label for="address">Address</label>
+      <textarea
+        id="address"
+        type="text"
+        formControlName="address"
+        pInputText
+        rows="4"
+      >
+      </textarea>
+    </div>
+    <div class="p-field p-col-12 p-md-12" id="submit">
+      <button
+        pButton
+        type="button"
+        label="Create"
+        *ngIf="!editMode"
+        (click)="onSubmit()"
+        class="ui-button-raised ui-button-success"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Update"
+        *ngIf="editMode"
+        (click)="onSubmit()"
+        class="ui-button-raised ui-button-success"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Reset"
+        *ngIf="!editMode"
+        (click)="reset()"
+        class="ui-button-raised ui-button-warning"
+      ></button>
+    </div>
+  </div>
+</form>
